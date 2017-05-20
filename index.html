@@ -13,13 +13,13 @@
 	<div ng-controller="myController" ng-cloak>
 	<h1>Custom Directives</h1>
 	<h2>{{message}}</h2>
-		<div>
-			<my-customer-details-directive></my-customer-details-directive>
-			<div my-customer-details-directive></div>
-			<div class="my-customer-details-directive"> <h5>Hi....</h5></div>
-			
+		<div ng-repeat="user in userDetails">
+			<my-customer-details-directive user-name="{{companyName}}"
+				user-details="user"
+				change-name="changeCompanyName()">
+
+			</my-customer-details-directive>
 		</div>
-<!-- directive: my-customer-details-directive -->
 	</div>
 <script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular.js"></script>
 <script type="text/javascript" src="app.js"></script>

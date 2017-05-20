@@ -1,0 +1,116 @@
+index.html
+-------------------
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title></title>
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+</head>
+<body>
+	<div ng-controller="myController" ng-cloak>
+	<h1>Custom Directives</h1>
+	<h2>{{message}}</h2>
+		<div>
+			<my-customer-details-directive></my-customer-details-directive>
+			<div my-customer-details-directive></div>
+			<div class="my-customer-details-directive"> <h5>Hi....</h5></div>
+			
+		</div>
+<!-- directive: my-customer-details-directive -->
+	</div>
+<script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular.js"></script>
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
+
+
+app.js
+------------------
+var app=angular.module("myApp",[])
+app.controller("myController",["$scope",function($scope){
+	$scope.message="Good Morning:)";
+}])
+
+app.directive("myCustomerDetailsDirective",function(){
+	return{
+		restrict:'EACM',
+		template:"<h3>Customer details</h3>",
+		replace:true
+	}
+})
+index.html
+--------------------
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title></title>
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+</head>
+<body>
+	<div ng-controller="myController" ng-cloak>
+	<h1>Custom Directives</h1>
+	<h2>{{message}}</h2>
+		<div ng-repeat="user in userDetails">
+			<my-customer-details-directive user-name="{{companyName}}"
+				user-details="user.userDetails"
+				change-name="changeCompanyName()">
+
+			</my-customer-details-directive>
+		</div>
+	</div>
+<script type="text/javascript" src="https://code.angularjs.org/1.6.4/angular.js"></script>
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
+app.js
+----------------
+var app=angular.module("myApp",[])
+app.controller("myController",["$scope",function($scope){
+	$scope.message="Good Morning:)";
+	$scope.companyName="TechMinds Pvt Ltd"
+	$scope.userDetails=[
+		{name: "Robin Sharma",address:"california,United States"},
+		{name:"savi Sharma",address:"Bhopal,India"},
+		{name:"Tolstoy" address:"USA"}
+	]
+	$scope.changeCompanyName=function(){
+		$scope.companyName="Techmind Solutions"
+	}
+
+}])
+
+app.directive("myCustomerDetailsDirective",function(){
+	return{
+		restrict:'EACM',
+		/*template:"<h3>Custom directive:  {{message}}</h3>",*/
+		templateUrl:'customerDetails.html',
+		replace:true,
+		scope:{
+				userName:'@',
+				userDetails:'=',
+				changeName:'&'
+		}
+	}
+})
+
+
+customerDetails.html
+--------------------------------
+<div>
+	<a href="#" class="list-group-item">
+		<h4 class="list-group-text">{{userName}}</h4>
+		<p class="list-group-text">{{userDetails.name}}</p>
+		<p class="list-group-text">{{userDetails.address}}</p>
+	</a>
+	<input type="button" class="btn btn-primary" value="change ComapnyName" ng-click="changeName()">
+</div>
